@@ -6,8 +6,10 @@
         var price=[]
         var stokbuah=[]
         var choosenBuah=[]
+        var choosenPrice=[]
         var displayFruits
         var getIn = true
+        var condChoosenPrice
 
         while(getIn) {
             var greet = alert('Selamat Datang di store kami!')
@@ -82,11 +84,11 @@
                 var chooseMenuBeli = true
                 while(chooseMenuBeli) {
                     do {
-                        var questionBeli = parseInt(prompt('Apakah ingin?\n\n1.Lihat list Buah\n2.Beli buah\n3.Exit'))
-                        if(!(questionBeli>=1&&questionBeli<4)) {
+                        var questionBeli = parseInt(prompt('Apakah ingin?\n\n1.Lihat list Buah\n2.Beli buah\n3.Bayar\n4.Exit'))
+                        if(!(questionBeli>=1&&questionBeli<5)) {
                             alert('Tidak ada di pilihan, mohon memilih menu yang tersedia')
                         }
-                    } while (!(questionBeli>=1&&questionBeli<4))
+                    } while (!(questionBeli>=1&&questionBeli<5))
                 
                 //kondisi menu Pembeli
                 if (questionBeli == 1) {
@@ -120,24 +122,27 @@
                                 }
                             } for(var l=0; l<price.length; l++) {
                                 if(j == l) {
+                                    choosenPrice.push(parseInt(price[l]))
                                     for(p=0; p<cartBuah.length; p++) {
                                         cartPrice.push(parseInt(cartBuah[p]) * parseInt(price[l]))
+                                        condChoosenPrice = false
                                     }
                                 }
                             } console.log(cartPrice)
                         } console.log(choosenBuah)
-                    }
+                    } condChoosenPrice = true
 
+                } else if(questionBeli == 3) {
                     var choosenFruits = ''
                     for(let m=0; m<choosenBuah.length; m++) {
-                        choosenFruits+=`${m+1}. ${choosenBuah[m]}: ${cartBuah[m]} X ${price[m]} =${cartPrice[m]}\n`
+                        choosenFruits+=`${m+1}. ${choosenBuah[m]}: ${cartBuah[m]} X ${choosenPrice[m]} =${cartPrice[m]}\n`
                     } console.log(choosenFruits)
-
+                
                     var totalBelanja = 0
-                    for(let n=0; n<cartPrice.length; n++) {
-                        totalBelanja += cartPrice[n]
+                    for(let n=0; n<cartPrice.length-1; n++) {
+                        totalBelanja += parseInt(cartPrice[n])
                     } console.log(totalBelanja)
-                    
+
                     alert(`Detail belanja:\n${choosenFruits}\nTotal belanja anda: ${totalBelanja}`)
                 } else {
                     chooseMenuBeli = false
