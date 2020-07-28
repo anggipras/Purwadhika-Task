@@ -152,15 +152,15 @@
                     // }
 
                     do {
-                        var payment = parseInt(prompt(`Detail shopping :\n${displaying(false,namaBuah)}\nTotal Price = ${totalHarga}\n\nPlease input your amount of money:`))
-                        if(payment < totalPrice){
+                        var payment = parseInt(prompt(`Detail shopping :\n${displaying(false,cartBuah)}\nTotal Price = ${totalHarga()}\n\nPlease input your amount of money:`))
+                        if(payment < totalHarga()){
                             alert('Your money is less than expected. Please re-input your amount of money!')
-                        } else if(payment == totalPrice) {
+                        } else if(payment == totalHarga()) {
                             alert('Thank you very much for shopping!')
                         } else{
-                            alert('Thank you, your change are ' + (payment - totalPrice))
+                            alert('Thank you, your change are ' + (payment - totalHarga()))
                         }
-                    } while(payment < totalPrice)
+                    } while(payment < totalHarga())
 
                     chooseMenuBeli = confirm('Would like to shop again?')
                     cartBuah = []
