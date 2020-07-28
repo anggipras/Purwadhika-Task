@@ -1,0 +1,162 @@
+<html>
+    <script>
+        var adminData = {
+            namaBuah: ['apel', 'mangga', 'strawberry'],
+            price: [10000, 15000, 20000],
+            stokBuah: [5, 6, 7]
+        }
+
+        var buyerData = {
+            cartBuah: [],
+            cartPrice: [],
+            cartStok: []
+        }
+        
+        var getIn = true
+        
+        let displaying = (cond, arr) => {
+            var displayFruits=''
+            for(let i=0; i<arr.length; i++) {
+                if(cond) {
+                    displayFruits+=`${i+1} ${adminData.namaBuah[i]}: Rp.${adminData.price[i]} stok=${adminData.stokBuah[i]}\n`
+                } else {
+                    displayFruits+=`${i+1}.${buyerData.cartBuah[i]}: ${buyerData.cartStok[i]} X Rp.${buyerData.cartPrice[i]} === ${buyerData.cartStok[i]*buyerData.cartPrice[i]}\n`
+                }
+            }
+            return displayFruits
+        }
+
+        let totalHarga = () => {
+            var totalPrice = 0
+            for(let i=0; i<buyerData.cartBuah.length; i++){
+                totalPrice+=(buyerData.cartPrice[i]*buyerData.cartStok[i])
+            }
+            return totalPrice
+        }
+
+        while(getIn) {
+            var greet = alert('Welcome to MCAD Fruit Store!')
+            do {
+                var welcome = parseInt(prompt('You are:\n\n1.Customer\n2.Admin\n3.Exit'))
+                if(!(welcome>=1&&welcome<4)) {
+                    alert('There is no this option. Please choose appropriate menu option!')
+                }
+            } while (!(welcome>=1&&welcome<4))
+
+            //kondisi masuk menu utama
+            if(welcome == 2) {
+                var chooseMenuJual = true
+                while(chooseMenuJual) {
+                    do {
+                        var questionJual = parseInt(prompt('Would like to:\n\n1.See the List\n2.Add fruit\n3.Edit fruit\n4.Exit'))
+                        if(!(questionJual>=1&&questionJual<5)) {
+                            alert('There is no this option. Please choose appropriate menu option!')
+                        }
+                    } while (!(questionJual>=1&&questionJual<5))
+
+                    //kondisi menu Penjual
+                    if (questionJual == 1) {
+                        alert(`Available:\n\n${displaying(true,adminData.namaBuah)}`)
+                    } else if (questionJual == 2) {
+                        var whatFruits = prompt(`Input name of fruit: `)
+                        var priceFruits = parseInt(prompt(`price of ${whatFruits} that to be set: `))
+                        var stokFruits = parseInt(prompt(`Stock of ${whatFruits} that to be set: `))
+                        alert(`Would like to add ${whatFruits} with price Rp.${priceFruits}.00 and stock ${stokFruits}?`)
+
+                        var sure = confirm('Are you sure?')
+                        if(sure){
+                            adminData.namaBuah.push(whatFruits)
+                            adminData.price.push(priceFruits)
+                            adminData.stokBuah.push(stokFruits)
+                            alert('Succeed')
+                        }else{
+                            alert('Well, we are getting back to the main menu')
+                        }
+
+                    } else if (questionJual == 3) {
+                        alert(`available:\n${displaying(true,adminData.namaBuah)}`)
+
+                        var chooseEdit
+                        do{
+                            chooseEdit = prompt(`Would like to edit:\n${displaying(true,adminData.namaBuah)}`)
+                        } while (!(chooseEdit>=1 &&chooseEdit<=adminData.namaBuah.length))
+
+                        var editBuah = prompt(`Would like to edit ${adminData.namaBuah[chooseEdit-1]} to be:`)
+                        var editPrice = prompt('Price of fruit: ')
+                        var editStok = prompt('Stock of fruit: ') 
+
+                        adminData.namaBuah.splice(chooseEdit -1, 1, editBuah)
+                        adminData.stok.splice(chooseEdit -1, 1, editPrice)
+                        adminData.price.splice(chooseEdit -1, 1, editStok)
+                        alert('Edited!')
+
+                        console.log(adminData.namaBuah)
+                        console.log(adminData.price)
+                        console.log(adminData.stokBuah)
+
+                    } else {
+                        chooseMenuJual = false
+                    }
+                }
+
+            } else if (welcome == 1) {
+                var chooseMenuBeli = true
+                while(chooseMenuBeli) {
+                    do {
+                        var questionBeli = parseInt(prompt('Would like to?\n\n1.Buy\n2.Pay\n3.Exit'))
+                        if(!(questionBeli>=1&&questionBeli<4)) {
+                            alert('There is no this option. Please choose appropriate menu option!')
+                        }
+                    } while (!(questionBeli>=1&&questionBeli<4))
+                
+                //kondisi menu Pembeli
+                if (questionBeli == 1) {
+                    var choosenCart = prompt(`Would like to buy:\n${displaying(true,adminData.namaBuah)}`)
+                    var indexCart = -1
+                    for(let j=0; j<buyerData.cartBuah.length; j++){
+                        if(buyerData.cartBuah[j] == adminData.namaBuah[choosenCart-1]){
+                            indexCart = j
+                        }
+                    }
+
+                    var choosenStok = parseInt(prompt('How many you want to pick?'))
+                    if(choosenStok > adminData.stokBuah[choosenCart-1]){
+                        alert('More than amount of stock that we have. Please re-input!')
+                    } else {
+                        if(indexCart < 0) {
+                            buyerData.cartBuah.push(adminData.namaBuah[choosenCart-1])
+                            buyerData.cartPrice.push(adminData.price[choosenCart-1])
+                            buyerData.cartStok.push(choosenStok)
+                        } else {
+                            buyerData.cartStok[indexCart]+=choosenStok 
+                        }
+                        adminData.stokBuah[choosenCart-1]-=choosenStok
+                    }
+
+                } else if(questionBeli == 2){
+                    do {
+                        var payment = parseInt(prompt(`Detail shopping :\n${displaying(false,buyerData.cartBuah)}\nTotal Price = ${totalHarga()}\n\nPlease input your amount of money:`))
+                        if(payment < totalHarga()){
+                            alert('Your money is less than expected. Please re-input your amount of money!')
+                        } else if(payment == totalHarga()) {
+                            alert('Thank you very much for shopping!')
+                        } else{
+                            alert('Thank you, your change are ' + (payment - totalHarga()))
+                        }
+                    } while(payment < totalHarga())
+
+                    chooseMenuBeli = confirm('Would like to shop again?')
+                    buyerData.cartBuah = []
+                    buyerData.cartPrice = []
+                    buyerData.cartStok = []
+
+                } else {
+                    chooseMenuBeli = false
+                }
+            } 
+        } else if (welcome == 3) {
+            getIn = false
+        }  
+    }
+    </script>
+</html>
