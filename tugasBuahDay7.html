@@ -1,26 +1,40 @@
 <html>
     <script>
-        var adminData = {
-            namaBuah: ['apel', 'mangga', 'strawberry'],
-            price: [10000, 15000, 20000],
-            stokBuah: [5, 6, 7]
+        class Barang {
+            constructor(_nama, _harga){
+                this.nama = _nama
+                this.harga = _harga
+            }
         }
 
-        var buyerData = {
-            cartBuah: [],
-            cartPrice: [],
-            cartStok: []
+        class Buah extends Barang {
+            constructor(_nama, _harga, _stok) {
+                super(_nama, _harga)
+                this.stok = _stok
+            }
         }
-        
-        var getIn = true
+
+        class Cart extends Barang {
+            constructor(_nama, _harga, _qty) {
+                super(_nama, _harga)
+                this.qty = _qty
+            }
+        }
+
+        var cart = []
+        var fruits = [
+            new Buah ('apel', 10000, 10),
+            new Buah ('mangga', 20000, 20),
+            new Buah ('pisang', 30000, 30)
+        ]
         
         let displaying = (cond, arr) => {
             var displayFruits=''
             for(let i=0; i<arr.length; i++) {
                 if(cond) {
-                    displayFruits+=`${i+1} ${adminData.namaBuah[i]}: Rp.${adminData.price[i]} stok=${adminData.stokBuah[i]}\n`
+                    displayFruits+=`${i+1} ${arr[i].nama}: Rp.${arr[i].harga} stok=${arr[i].stok}\n`
                 } else {
-                    displayFruits+=`${i+1}.${buyerData.cartBuah[i]}: ${buyerData.cartStok[i]} X Rp.${buyerData.cartPrice[i]} === ${buyerData.cartStok[i]*buyerData.cartPrice[i]}\n`
+                    displayFruits+=`${i+1}.${arr[i].nama}: ${arr[i].qty} X Rp.${arr[i].harga} === ${arr[i].qty*arr[i].harga}\n`
                 }
             }
             return displayFruits
@@ -28,12 +42,13 @@
 
         let totalHarga = () => {
             var totalPrice = 0
-            for(let i=0; i<buyerData.cartBuah.length; i++){
-                totalPrice+=(buyerData.cartPrice[i]*buyerData.cartStok[i])
+            for(let i=0; i<cart.length; i++){
+                totalPrice+=(cart[i].harga * cart[i].qty)
             }
             return totalPrice
         }
 
+        var getIn = true
         while(getIn) {
             var greet = alert('Welcome to MCAD Fruit Store!')
             do {
@@ -56,7 +71,7 @@
 
                     //kondisi menu Penjual
                     if (questionJual == 1) {
-                        alert(`Available:\n\n${displaying(true,adminData.namaBuah)}`)
+                        alert(`Available:\n\n${displaying(true,fruits)}`)
                     } else if (questionJual == 2) {
                         var whatFruits = prompt(`Input name of fruit: `)
                         var priceFruits = parseInt(prompt(`price of ${whatFruits} that to be set: `))
@@ -65,35 +80,28 @@
 
                         var sure = confirm('Are you sure?')
                         if(sure){
-                            adminData.namaBuah.push(whatFruits)
-                            adminData.price.push(priceFruits)
-                            adminData.stokBuah.push(stokFruits)
+                            fruits.push(new Buah(whatFruits, priceFruits, stokFruits))
                             alert('Succeed')
                         }else{
                             alert('Well, we are getting back to the main menu')
                         }
 
                     } else if (questionJual == 3) {
-                        alert(`available:\n${displaying(true,adminData.namaBuah)}`)
+                        alert(`available:\n${displaying(true,fruits)}`)
 
                         var chooseEdit
                         do{
-                            chooseEdit = prompt(`Would like to edit:\n${displaying(true,adminData.namaBuah)}`)
-                        } while (!(chooseEdit>=1 &&chooseEdit<=adminData.namaBuah.length))
+                            chooseEdit = prompt(`Would like to edit:\n${displaying(true,fruits)}`)
+                        } while (!(chooseEdit>=1 &&chooseEdit<=fruits.length))
 
-                        var editBuah = prompt(`Would like to edit ${adminData.namaBuah[chooseEdit-1]} to be:`)
+                        var editBuah = prompt(`Would like to edit ${fruits[chooseEdit-1].nama} to be:`)
                         var editPrice = prompt('Price of fruit: ')
                         var editStok = prompt('Stock of fruit: ') 
 
-                        adminData.namaBuah.splice(chooseEdit -1, 1, editBuah)
-                        adminData.stok.splice(chooseEdit -1, 1, editPrice)
-                        adminData.price.splice(chooseEdit -1, 1, editStok)
+                        buah.splice(chooseEdit-1, 1, new Buah(editBuah, editPrice, editStok))
                         alert('Edited!')
 
-                        console.log(adminData.namaBuah)
-                        console.log(adminData.price)
-                        console.log(adminData.stokBuah)
-
+                        console.log(new Buah(editBuah, editPrice, editStok))
                     } else {
                         chooseMenuJual = false
                     }
@@ -111,31 +119,29 @@
                 
                 //kondisi menu Pembeli
                 if (questionBeli == 1) {
-                    var choosenCart = prompt(`Would like to buy:\n${displaying(true,adminData.namaBuah)}`)
+                    var choosenCart = prompt(`Would like to buy:\n${displaying(true,fruits)}`)
                     var indexCart = -1
-                    for(let j=0; j<buyerData.cartBuah.length; j++){
-                        if(buyerData.cartBuah[j] == adminData.namaBuah[choosenCart-1]){
+                    for(let j=0; j<cart.length; j++){
+                        if(cart[j].nama == fruits[choosenCart-1].nama){
                             indexCart = j
                         }
                     }
 
                     var choosenStok = parseInt(prompt('How many you want to pick?'))
-                    if(choosenStok > adminData.stokBuah[choosenCart-1]){
+                    if(choosenStok > fruits[choosenCart-1].stok){
                         alert('More than amount of stock that we have. Please re-input!')
                     } else {
                         if(indexCart < 0) {
-                            buyerData.cartBuah.push(adminData.namaBuah[choosenCart-1])
-                            buyerData.cartPrice.push(adminData.price[choosenCart-1])
-                            buyerData.cartStok.push(choosenStok)
+                            cart.push(new Cart(fruits[choosenCart-1].nama, fruits[choosenCart-1].harga, choosenStok))
                         } else {
-                            buyerData.cartStok[indexCart]+=choosenStok 
+                            cart[indexCart].qty+=choosenStok 
                         }
-                        adminData.stokBuah[choosenCart-1]-=choosenStok
+                        fruits[choosenCart-1].stok-=choosenStok
                     }
 
                 } else if(questionBeli == 2){
                     do {
-                        var payment = parseInt(prompt(`Detail shopping :\n${displaying(false,buyerData.cartBuah)}\nTotal Price = ${totalHarga()}\n\nPlease input your amount of money:`))
+                        var payment = parseInt(prompt(`Detail shopping :\n${displaying(false,cart)}\nTotal Price = ${totalHarga()}\n\nPlease input your amount of money:`))
                         if(payment < totalHarga()){
                             alert('Your money is less than expected. Please re-input your amount of money!')
                         } else if(payment == totalHarga()) {
@@ -146,10 +152,7 @@
                     } while(payment < totalHarga())
 
                     chooseMenuBeli = confirm('Would like to shop again?')
-                    buyerData.cartBuah = []
-                    buyerData.cartPrice = []
-                    buyerData.cartStok = []
-
+                    cart = []
                 } else {
                     chooseMenuBeli = false
                 }
