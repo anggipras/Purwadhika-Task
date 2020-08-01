@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>VERSION V1.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script defer src="./table-v1.js"></script>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        /* DIV */
+        div.formWrapper {
+            margin: 13px;
+        }
+
+        /* Table */
+
+        table,th,td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        table{
+            margin: 0 auto;
+            text-align: center;   
+        }
+
+        table.one {
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        table.inside {
+            margin: 20px;
+        }
+
+        thead th {
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<!-- Do together : How to input and rendering in table (left table)-->
+<!-- Exercise : Right Table -->
+
+<body>
+
+    <table class="one">
+        <thead>
+                <th>Form Product</th>
+                <th>Form Hewan</th>
+        </thead>
+        <tr>
+            <td>
+                <div class="formWrapper">
+                    <form action="">
+                        <p>Nama: <input type="text" id="name"></p>
+                        <p>Harga: <input type="number" id="price"></p>
+                        <p>Kondisi: <input type="radio" name="condition" value="Baru" id="condBA">Baru <input type="radio" name="condition" value="Second" id="condBS">Second</p>
+                        <p>Kategori: <select id="category">
+                                <option value="Elektronik">Elektronik</option>
+                                <option value="Pakaian">Pakaian</option>
+                                <option value="Otomotif">Otomotif</option>
+                            </select>
+                        </p>
+                        <input type="button" value="Tambahkan" onclick="klikBarang()">
+                    </form>
+                </div>
+            </td>
+            <td>
+                <div class="formWrapper">
+                    <form action="">
+                        <p>Nama: <input type="text"  id="nameH"></p>
+                        <p>Harga: <input type="number"  id="priceH"></p>
+                        <p></p>Kelamin: <input type="radio" name="sex" value="Jantan" id="kelaminHJ">Jantan<input type="radio" name="sex" value="Betina" id="kelaminHB">Betina</p>
+                        <p>Status: <input type="radio" name="stat" value="Liar" id="statusL">Liar <input type="radio" name="stat" value="Peliharaan" id="statusP">Peliharaan</p>
+
+                        <input type="button" value="Tambahkan" onclick="klikHewan()">
+                    </form>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Data Barang</th>  
+                <th>Data Hewan</th>
+            </tr>
+        </thead>
+        <tr>
+            <td>
+                <table class="inside">
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Harga</th>
+                            <th>Kondisi</th>
+                            <th>Kategori</th>
+                        </tr>
+                    </thead>
+                    <tbody id = "product">
+
+                    </tbody>
+                </table>
+            </td>
+            <td>
+                <table class="inside">
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Umur</th>
+                            <th>Kelamin</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id = "animal">
+
+                    </tbody>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+
+</body>
+
+<script>
+    // fungsi tambah barang
+    const klikBarang = () => {
+        var name = document.getElementById('name').value
+        var price = document.getElementById('price').value
+        var category = document.getElementById('category').value
+     
+        var cond
+        if(document.getElementById('condBA').checked) {
+            cond = document.getElementById('condBA').value
+        } else {
+            cond = document.getElementById('condBS').value
+        }
+
+        let obj = {
+            "name": name,
+            "price": price,
+            "cond": cond,
+            "categ": category
+        }
+
+        var tableP = document.getElementById('product')
+        var row = document.createElement('tr')
+        for (var val in obj) {
+            var cell = document.createElement('td')
+            var cellText = document.createTextNode(obj[val])
+            cell.appendChild(cellText)
+            row.appendChild(cell)
+        }
+        tableP.appendChild(row)
+    }
+
+    // fungsi tambah hewan
+    const klikHewan = () => {
+        var name = document.getElementById('nameH').value
+        var price = document.getElementById('priceH').value
+        
+        var kelamin
+        if (document.getElementById('kelaminHJ').checked) {
+            kelamin = document.getElementById('kelaminHJ').value
+        } else {
+            kelamin = document.getElementById('kelaminHB').value
+        }
+     
+        var status
+        if(document.getElementById('statusL').checked) {
+            status = document.getElementById('statusL').value
+        } else {
+            status = document.getElementById('statusP').value
+        }
+
+        let obj = {
+            "name": name,
+            "price": price,
+            "sex": kelamin,
+            "status": status
+        }
+
+        var tableP = document.getElementById('animal')
+        var row = document.createElement('tr')
+        for (var val in obj) {
+            var cell = document.createElement('td')
+            var cellText = document.createTextNode(obj[val])
+            cell.appendChild(cellText)
+            row.appendChild(cell)
+        }
+        tableP.appendChild(row)
+    }
+</script>
+</html>

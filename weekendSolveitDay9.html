@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>
+        Solve it 6# <br>
+        Masukkan angka:
+    </p>
+    <form>
+        <input type="text"><br>
+    </form>
+    <p>
+        <button onclick="myFunc6()">Kuadratkan!</button>
+    </p>
+    <p id="hasil"></p>
+    <p>=================================================</p>
+    <p>
+        Solve it 7# <br>
+    </p>
+    <form>
+        <label for="angka1">Masukkan angka 1:</label>
+        <input type="text" id="angka1"><br>
+        <label for="angka2">Masukkan angka 2:</label>
+        <input type="text" id="angka2"><br>
+    </form>
+    <p>
+        <button onclick="myFunc7()">Pangkatkan!</button>
+    </p>
+    <p id="hasil2"></p>
+    <p>=================================================</p>
+    <p>
+        Solve it 8# <br>
+    </p>
+    <form>
+        <label for="char1">Ketik kalimat:</label>
+        <input type="text" id="char1"><br>
+        <label for="char2">karakter yang dicari:</label>
+        <input type="text" id="char2"><br>
+    </form>
+    <p>
+        <button onclick="myFunc8()">Cari!</button>
+    </p>
+    <p id="hasil3"></p>
+    <p>=================================================</p>
+    <p>
+        Solve it 9# <br>
+    </p>
+    <form>
+        <label for="angka1">Masukkan angka 1:</label>
+        <input type="text" id="angka1"><br>
+        <label for="angka2">Masukkan angka 2:</label>
+        <input type="text" id="angka2"><br>
+    </form>
+    <p>
+        <button onclick="myFunc90()">Kali x</button>
+        <button onclick="myFunc91()">Bagi :</button>
+        <button onclick="myFunc92()">Tambah +</button>
+        <button onclick="myFunc93()">Kurang -</button>
+        <button onclick="myFunc94()">Modulus %</button>
+        <button onclick="myFunc95()">Pangkat ^</button>
+    </p>
+    <p id="hasil4"></p>
+    <p>=========================================================================================================================</p>
+    <p>
+        Solve it 10# <br>
+    </p>
+    <form name="quiz">
+
+        <b>1. Siapakah presiden ketiga Republik indonesia?</b><br>
+        <input type="radio" name="p1" value="Prof.B.J.Habibie">Prof.B.J.Habibie
+        <input type="radio" name="p1" value="Abdurrahman Wahid">Abdurrahman Wahid
+        <input type="radio" name="p1" value="Ir. Soekarno">Ir. Soekarno
+        <input type="radio" name="p1" value="Joko Widodo">Joko Widodo
+        <br><br>
+        <b>2. Berikut adalah nama-nama bahasa pemrograman, kecuali...</b><br>
+        <input type="radio" name="p2" value="Python">Python
+        <input type="radio" name="p2" value="Micro:bit">Micro:bit
+        <input type="radio" name="p2" value="JavaScript">JavaScript
+        <input type="radio" name="p2" value="C++">C++
+        <br><br>
+        <b>3. Apa judul lagu yang diduga diplagiat oleh lagu 'Sayang' Via Vallen?</b><br>
+        <input type="radio" name="p3" value="Qing Fei De Yi">Qing Fei De Yi
+        <input type="radio" name="p3" value="Ting Hai">Ting Hai
+        <input type="radio" name="p3" value="Mirai E Kiroro">Mirai E Kiroro
+        <input type="radio" name="p3" value="Hau Siang Hau Siang">Hau Siang Hau Siang
+        <br><br>
+        <b>4. Siapa sosok di balik topeng Batman?</b><br>
+        <input type="radio" name="p4" value="Natasha Romanov">Natasha Romanov
+        <input type="radio" name="p4" value="Peter Parker">Peter Parker
+        <input type="radio" name="p4" value="Tony Stark">Tony Stark
+        <input type="radio" name="p4" value="Bruce Wayne">Bruce Wayne
+        <br><br>
+        <input type="button" value="SUBMIT" onclick="result(form)">
+    </form>
+    <p id="hasil5"></p>
+    
+        
+</body>
+<script>
+    function myFunc6() {
+        var input1 = document.getElementsByTagName('input')[0].value
+        var kuadrat = input1**2
+        document.getElementById('hasil').innerHTML = `Hasil ${input1}** = ${kuadrat}`
+    }
+
+    function myFunc7() {
+        var input1 = document.getElementsByTagName('input')[1].value
+        var input2 = document.getElementsByTagName('input')[2].value
+        var pangkat = input1**input2
+        document.getElementById('hasil2').innerHTML = `Hasil ${input1}**${input2} = ${pangkat}`
+    }
+
+    function myFunc8() {
+        var input1 = document.getElementsByTagName('input')[3].value
+        var input2 = document.getElementsByTagName('input')[4].value
+        
+        var words = input1
+        var count = 0
+        for(let i=0; i<words.length; i++) {
+            if (words[i]===input2){
+                count++
+            }
+        }
+
+        var input3 = document.getElementById('hasil3').innerHTML = `Jumlah '${input2}' sebanyak ${count}`
+    }
+
+    function myFunc90() {
+        var num1 = document.getElementsByTagName('input')[5].value
+        var num2 = document.getElementsByTagName('input')[6].value
+        document.getElementById('hasil4').innerHTML = `${num1} * ${num2} = ${num1 * num2}`
+    }
+    function myFunc91() {
+        var num1 = document.getElementsByTagName('input')[5].value
+        var num2 = document.getElementsByTagName('input')[6].value
+        document.getElementById('hasil4').innerHTML = `${num1} / ${num2} = ${num1 / num2}`
+    }
+    function myFunc92() {
+        var num1 = document.getElementsByTagName('input')[5].value
+        var num2 = document.getElementsByTagName('input')[6].value
+        var total = parseInt(num1) + parseInt(num2)
+        document.getElementById('hasil4').innerHTML = `${num1} + ${num2} = ${total}`
+    }
+    function myFunc93() {
+        var num1 = document.getElementsByTagName('input')[5].value
+        var num2 = document.getElementsByTagName('input')[6].value
+        document.getElementById('hasil4').innerHTML = `${num1} - ${num2} = ${num1 - num2}`
+    }
+    function myFunc94() {
+        var num1 = document.getElementsByTagName('input')[5].value
+        var num2 = document.getElementsByTagName('input')[6].value
+        document.getElementById('hasil4').innerHTML = `${num1} % ${num2} = ${num1 % num2}`
+    }
+    function myFunc95() {
+        var num1 = document.getElementsByTagName('input')[5].value
+        var num2 = document.getElementsByTagName('input')[6].value
+        document.getElementById('hasil4').innerHTML = `${num1}**${num2} = ${num1 ** num2}`
+    }
+
+    var manyQues = 4
+    var manyAnsOfQues = 4
+    var jawaban = ["Prof.B.J.Habibie", "Micro:bit", "Mirai E Kiroro", "Bruce Wayne"]
+
+    function result(form) {
+        var nilai = 0
+        var firstArrOfInp
+        var pilihan
+        for(let i=0; i<manyQues; i++) {
+            firstArrOfInp = i * manyAnsOfQues
+            console.log(firstArrOfInp)
+            for(j=0; j<manyAnsOfQues; j++) {
+                pilihan = form[firstArrOfInp + j]
+                console.log(pilihan)
+                if(pilihan.checked) {
+                    if(pilihan.value == jawaban[i]) {
+                        nilai++
+                    }
+                }
+            }
+        }
+        score = Math.round((nilai/manyQues) * 100)
+        console.log(score)
+        document.getElementById('hasil5').innerHTML = `Nilai akhir anda ${score}`
+    }
+
+</script>
+</html>
