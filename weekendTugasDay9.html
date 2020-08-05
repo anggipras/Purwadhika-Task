@@ -145,12 +145,7 @@
             cond = document.getElementById('condBS').value
         }
 
-        let obj = {
-            "name": name,
-            "price": price,
-            "cond": cond,
-            "categ": category
-        }
+        let obj = {name,price,cond,category}
 
         var tableP = document.getElementById('product')
         var row = document.createElement('tr')
@@ -182,12 +177,7 @@
             status = document.getElementById('statusP').value
         }
 
-        let obj = {
-            "name": name,
-            "price": price,
-            "sex": kelamin,
-            "status": status
-        }
+        let obj = {name,price,kelamin,status}
 
         var tableP = document.getElementById('animal')
         var row = document.createElement('tr')
