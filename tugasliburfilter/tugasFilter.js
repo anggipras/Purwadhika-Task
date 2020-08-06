@@ -63,12 +63,13 @@ const funFilterCategory = (select) => {
     document.getElementById('render').innerHTML = displayChange.join('')
 }
 
-const funFilterPriceMin = () => {
+const funFilterPrice = () => {
     var input = document.getElementById('min').value
-
+    var input2 = document.getElementById('max').value
     var filtered = arrInput.filter(val => val.price >= input)
+    var filtered2 = filtered.filter(val => val.price <= input2)
 
-    var displayChange = filtered.map(val => {
+    var displayChange = filtered2.map(val => {
         return  `<tr>
                     <td>${val.id}</td>
                     <td>${val.categ}</td>
@@ -78,23 +79,4 @@ const funFilterPriceMin = () => {
                 </tr>`
     })
     document.getElementById('render').innerHTML = displayChange.join('')
-}
-
-const funFilterPriceMax = () => {
-    var input = document.getElementById('max').value
-
-    var filteredMax = arrInput.filter(val => val.price <= input)
-    console.log(filteredMax)
-
-    var displayChangeMax = filteredMax.map(val => {
-        return  `<tr>
-                    <td>${val.id}</td>
-                    <td>${val.categ}</td>
-                    <td>${val.name}</td>
-                    <td>${val.price}</td>
-                    <td>${val.stock}</td>
-                </tr>`
-    })
-    document.getElementById('render').innerHTML = displayChangeMax.join('')
-    console.log(displayChangeMax)
 }
