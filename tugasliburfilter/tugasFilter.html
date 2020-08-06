@@ -40,13 +40,9 @@
         <!-- FILTER -->
         <fieldset>
             <legend>Filter</legend>
-            <p>Nama: <input type="text" id="keyword" oninput="funFilterName()"></p>
-            <p>Harga: <input type="number" name="min" id="min" oninput="funFilterPrice()"> - <input type="number" name="max" id="max" oninput="funFilterPrice()"></p>
-            <p>Category: <select name="category" id="categoryFilter" onchange="funFilterCategory(this)">
-                            <option value="">Select Category</option>
-                            <option value="electronic">Electronic</option>
-                            <option value="beverages">Beverages</option>
-                        </select></p>
+            <p>Nama: <input type="text" id="keyword" oninput="funFilter()"></p>
+            <p>Harga: <input type="number" name="min" id="min" onkeyup="funFilter()"> - <input type="number" name="max" id="max" onkeyup="funFilter()"></p>
+            <p>Category: <select name="category" id="categoryFilter" onchange="funFilter()"></select></p>
         </fieldset>
         
         <!-- INPUT -->
@@ -55,10 +51,7 @@
             <table>
                 <td><input type="text" name="nama" id="nameInput" placeholder="Nama"></td>
                 <td><input type="number" name="nama" id="priceInput" placeholder="Harga"></td>
-                <td><select name="category" id="categoryInput">
-                    <option value="electronic">Electronic</option>
-                    <option value="beverages">Beverages</option>
-                </select></td>
+                <td><select name="category" id="categoryInput"></select></td>
                 <td><input type="text" name="nama" id="stockInput" placeholder="Stock"></td>
             </table>
             <p><input type="button" value="Input" onclick="funInputData()"></p>
@@ -74,6 +67,7 @@
                     <th>Nama</th>
                     <th>Price</th>
                     <th>Stock</th>
+                    <th colspan="2">Action</th>
                     <!--  <th colspan="2">Action</th> -->
                 </thead>
                 <tbody id="render">
