@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="countdown"></div>
+</body>
+<script>
+countdown(120);
+
+function countdown(seconds) {
+  var now = new Date().getTime();
+  console.log(now, '1')
+  var target = new Date(now + seconds * 1000);
+  console.log(target, '2')
+  
+  var int = setInterval(function () {
+    var now = new Date();
+    console.log(now, '3')
+    var remaining = (target - now) / 1000;
+    console.log(remaining, '4')
+    
+    if (remaining < 0) {
+      clearInterval(int);
+      return
+    }
+    
+    var minutes = Math.floor(remaining / 60);
+    var seconds = Math.round(remaining % 60);
+    
+    document.getElementById("countdown").innerHTML
+      = format(minutes) + ":" + format(seconds);
+  }, 1000);
+}
+
+function format(num) {
+  return num < 10 ? "0" + num : num;
+}
+</script>
+</html>

@@ -1,26 +1,31 @@
-arrInput = [
+arrProduct = [
     { id: 1579581080923,categ: 'Beverages' , name: "Ramen", price: 15000, stock : 20},
-    { id: 1579581081130,categ: 'Electronic' , name: "Iphone", price: 7000000, stock :5},
-    { id: 1579581081342,categ: 'Clothes' , name: "Pants", price: 100000, stock :15},
-    { id: 1579581081577,categ: 'Electronic' , name: "Samsung", price: 4000000, stock :7}
+    { id: 1579581081130,categ: 'Electronic' , name: "Iphone", price: 7000000, stock : 5},
+    { id: 1579581081342,categ: 'Clothes' , name: "Pants", price: 100000, stock : 15},
+    { id: 1579581081577,categ: 'Electronic' , name: "Samsung", price: 4000000, stock : 7}
   ]
 
 var arrCateg = ["Select", "Electronic", "Beverages", "Clothes"]
 
-const displayInput = () => {
-    var listName = arrInput.map((val, ind) => {
+var cartProduct = []
+
+const displayInput = (arr) => {
+    var listName = arr.map((val, ind) => {
         return (
             `<tr>
                 <td>${val.id}</td>
-                <td>${val.categ}</td>
-                <td>${val.name}</td>
-                <td>${val.price}</td>
-                <td>${val.stock}</td>
+                <td id="categR${ind}">${val.categ}</td>
+                <td id="nameR${ind}">${val.name}</td>
+                <td id="priceR${ind}">${val.price}</td>
+                <td id="stockR${ind}">${val.stock}</td>
                 <td>
-                    <input type="submit" value="Delete" onclick="deleteProd(${ind})">
+                    <input type="button" id="add" value="Add to cart" onclick="addToCart(${ind})">
                 </td>
                 <td>
-                    <input type="submit" value="Edit" onclick="editProd(${ind})">
+                    <input type="button" id="delete" value="Delete" onclick="deleteProd(${ind})">
+                </td>
+                <td>
+                    <input type="button" id="edit" value="Edit" onclick="editProd(${ind})">
                 </td>
             </tr>`
         )
@@ -42,14 +47,14 @@ const funInputData = () => {
     var categ = document.getElementById('categoryInput').value
     var stock = document.getElementById('stockInput').value
     var id = new Date().getTime()
-
-    arrInput.push({id, categ, name, price, stock})
-    console.log(arrInput)
-    document.getElementById('nameInput').value = ''
+    
+    arrProduct.push({id, categ, name, price, stock})
+    
+    document.getElementById('nameInput').value = '' //Data is inputed already, then back to blank input form
     document.getElementById('priceInput').value = ''
     document.getElementById('categoryInput').value = ''
     document.getElementById('stockInput').value = ''
-    displayInput()
+    displayInput(arrProduct)
 }
 
 const funFilter = () => {
@@ -58,7 +63,7 @@ const funFilter = () => {
     var inputMin = document.getElementById('min').value
     var inputCateg = document.getElementById('categoryFilter').value
 
-    var listChange = arrInput.filter(val => {
+    var listChange = arrProduct.filter(val => {
         var names = val.name.toLowerCase().includes(inputName.toLowerCase())
         if(!inputName) {
             names = true
@@ -73,38 +78,244 @@ const funFilter = () => {
         }
         return names && minMax && catego //it will return to true
     })
-    document.getElementById('render').innerHTML = displaying(listChange).join('')
+    document.getElementById('render').innerHTML = showFilter(listChange).join('')
 }
 
-const displaying = (filt) => {
-    return filt.map(val => {
-        return(
+const showFilter = (filt) => {
+    return filt.map((val, ind) => {
+        return (
             `<tr>
                 <td>${val.id}</td>
                 <td>${val.categ}</td>
                 <td>${val.name}</td>
                 <td>${val.price}</td>
                 <td>${val.stock}</td>
+                <td>
+                    <input type="button" id="add" value="Add to cart" onclick="addToCart(${ind})">
+                </td>
+                <td>
+                    <input type="button" id="delete" value="Delete" onclick="deleteProd(${ind})">
+                </td>
+                <td>
+                    <input type="button" id="edit" value="Edit" onclick="editProd(${ind})">
+                </td>
             </tr>`
         )
     })
 }
 
-displayInput()
-
 const deleteProd = (getInd) => {
-    arrInput.splice(getInd, 1)
-    displayInput()
+    var output = ''
+    arrProduct.forEach((val, ind) => {
+        if(ind == getInd) {
+            output += 
+            `<tr>
+                <td>${val.id}</td>
+                <td>${val.categ}</td>
+                <td>${val.name}</td>
+                <td>${val.price}</td>
+                <td>${val.stock}</td>
+                <td>
+                    <input type="button" id="yes" value="Yes" onclick="yesb(${ind})">
+                </td>
+                <td>
+                    <input type="button" id="cancel" value="Cancel" onclick="nob(${ind})">
+                </td>
+            </tr>`
+        } else {
+            output += 
+            `<tr>
+                <td>${val.id}</td>
+                <td>${val.categ}</td>
+                <td>${val.name}</td>
+                <td>${val.price}</td>
+                <td>${val.stock}</td>
+                <td>
+                    <input type="button" id="delete" value="Delete" onclick="deleteProd(${ind})">
+                </td>
+                <td>
+                    <input type="button" id="edit" value="Edit" onclick="editProd(${ind})">
+                </td>
+            </tr>`
+        }
+    })
+    return document.getElementById('render').innerHTML = output
+}
+
+const yesb = (ind) => {
+    arrProduct.splice(ind, 1)
+    document.getElementById('render').innerHTML = showFilter(arrProduct).join('')
+}
+
+const nob = () => {
+    document.getElementById('render').innerHTML = showFilter(arrProduct).join('')
 }
 
 const editProd = (getInd) => {
-    arrInput.splice(getInd, 1, { 
-        id: arrInput[getInd].id,
-        categ: `<input type="text" id="${getInd}">`,
-        name: `<input type="text" id="${getInd}">`,
-        price: `<input type="number" id="${getInd}">`,
-        stock : `<input type="text" id="${getInd}">`
+    var output = ''
+    arrProduct.forEach((val, ind) => {
+        if(ind == getInd) {
+            var listCateg = arrCateg.map(val => {
+                if(val == arrProduct[getInd].categ) {
+                    return (
+                        `<option value='${val}' selected>${val}</option>`
+                    )
+                }
+                return `<option value='${val}'>${val}</option>`
+            }).join('')
+
+            output += 
+            `<tr>
+                <td>${val.id}</td>
+                <td>
+                    <select id="categs${ind}">${listCateg}</select>
+                </td>
+                <td>
+                    <input type="text" id="names${ind}" value="${val.name}">
+                </td>
+                <td>
+                    <input type="number" id="prices${ind}" value="${val.price}">
+                </td>
+                <td>
+                    <input type="number" id="stocks${ind}" value="${val.stock}">
+                </td>
+                <td>
+                    <input type="button" id="save" value="Save" onclick="saveb(${ind})">
+                </td>
+                <td>
+                    <input type="button" id="cancel" value="Cancel" onclick="nobb(${ind})">
+                </td>
+            </tr>`
+        } else {
+            output += 
+            `<tr>
+                <td>${val.id}</td>
+                <td>${val.categ}</td>
+                <td>${val.name}</td>
+                <td>${val.price}</td>
+                <td>${val.stock}</td>
+                <td>
+                    <input type="button" id="delete" value="Delete" onclick="deleteProd(${ind})">
+                </td>
+                <td>
+                    <input type="button" id="edit" value="Edit" onclick="editProd(${ind})">
+                </td>
+            </tr>`
+        }
     })
-    console.log(arrInput)
-    displayInput()
+    return document.getElementById('render').innerHTML = output
+}
+
+const saveb = (getInd) => {
+    var arrSaved = []
+    var id = arrProduct[getInd].id
+    var categ = document.getElementById(`categs${getInd}`).value
+    var name = document.getElementById(`names${getInd}`).value
+    var price = document.getElementById(`prices${getInd}`).value
+    var stock = document.getElementById(`stocks${getInd}`).value
+
+    arrSaved.push({id, categ, name, price, stock})
+    arrProduct.splice(getInd, 1, ...arrSaved)
+
+    document.getElementById('render').innerHTML = showFilter(arrProduct).join('')
+}
+
+const nobb = () => {
+    document.getElementById('render').innerHTML = showFilter(arrProduct).join('')
+}
+
+displayInput(arrProduct)
+
+const checkedCart = () => {
+    if(cartProduct.length) {
+        var cartOutput = ''
+        cartProduct.forEach((val, ind) => {
+            cartOutput +=
+            `<tr>
+                <td>${val.id}</td>
+                <td>${val.categ}</td>
+                <td>${val.name}</td>
+                <td>${val.price}</td>
+                <td>${val.stock}</td>
+                <td>
+                    <input type="button" id="delete" value="Delete" onclick="deleteCart(${ind})">
+                </td>
+            </tr>`
+        })
+        var lastOutput = 
+        `<fieldset>
+            <legend>Cart</legend>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Category</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${cartOutput}
+                </tbody>
+            </table><br><br>
+            <p id="checkout"></p>
+        </fieldset>`
+        document.getElementById('added').innerHTML = lastOutput
+        document.getElementById('checkout').innerHTML= `<button onclick='checkOut(event)'>Checkout</button>`
+    } else {
+        document.getElementById('added').innerHTML = ''
+    }
+}
+
+const addToCart = (getInd) => {
+    cartProduct.push(arrProduct[getInd])
+    checkedCart()
+    console.log(cartProduct)
+}
+
+const deleteCart = (getInd) => {
+    cartProduct.splice(getInd, 1)
+    checkedCart()
+}
+
+const checkOut = (e) => {
+    console.log(cartProduct)
+    e.preventDefault()
+    var sure = confirm('Are you sure?')
+    if(sure) {
+        var checkOutDisplay = 
+        `<fieldset>
+            <legend>Total</legend>
+            ${totalCart()}
+        </fieldset>`
+        document.getElementById('counted').innerHTML = checkOutDisplay
+        console.log(checkOutDisplay)
+    } else {
+        alert('Make sure all product already checked!')
+    }
+}
+
+const totalCart = () => {
+    var total = 0
+    cartProduct.forEach(val => {
+        total += val.price
+    })
+
+    var ppn = (1/100) * total
+
+    var lastTotal = total + ppn
+
+    return (
+        `<div>
+            Total Biaya sebelum PPN = Rp.${total},00
+        </div><br>
+        <div>
+            PPN = Rp.${ppn},00
+        </div><br>
+        <div>
+            Total harga yang harus dibayarkan = Rp.${lastTotal},00
+        </div>`
+    )
 }
