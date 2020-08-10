@@ -1,8 +1,8 @@
 arrProduct = [
-    { id: 1579581080923,categ: 'Beverages' , name: "Ramen", price: 15000, stock : 20},
-    { id: 1579581081130,categ: 'Electronic' , name: "Iphone", price: 7000000, stock : 5},
-    { id: 1579581081342,categ: 'Clothes' , name: "Pants", price: 100000, stock : 15},
-    { id: 1579581081577,categ: 'Electronic' , name: "Samsung", price: 4000000, stock : 7}
+    { id: 1579581080923,categ: 'Beverages' , name: "Ramen", price: 15000, stock: 20, qtyCart: 1},
+    { id: 1579581081130,categ: 'Electronic' , name: "Iphone", price: 7000000, stock: 5, qtyCart: 1},
+    { id: 1579581081342,categ: 'Clothes' , name: "Pants", price: 100000, stock: 15, qtyCart: 1},
+    { id: 1579581081577,categ: 'Electronic' , name: "Samsung", price: 4000000, stock: 7, qtyCart: 1}
   ]
 
 var arrCateg = ["Select", "Electronic", "Beverages", "Clothes"]
@@ -236,7 +236,7 @@ const checkedCart = () => {
                 <td>${val.categ}</td>
                 <td>${val.name}</td>
                 <td>${val.price}</td>
-                <td>${val.stock}</td>
+                <td>${val.qtyCart}</td>
                 <td>
                     <input type="button" id="delete" value="Delete" onclick="deleteCart(${ind})">
                 </td>
@@ -252,7 +252,7 @@ const checkedCart = () => {
                         <th>Category</th>
                         <th>Name</th>
                         <th>Price</th>
-                        <th>Stock</th>
+                        <th>Qty</th>
                         <th>Delete</th>
                     </tr>
                 </thead>
@@ -270,9 +270,66 @@ const checkedCart = () => {
 }
 
 const addToCart = (getInd) => {
-    cartProduct.push(arrProduct[getInd])
-    checkedCart()
-    console.log(cartProduct)
+    var indexCart = -1
+    for(let i=0; i < cartProduct.length; i++) {
+        if(cartProduct[i].name == arrProduct[getInd].name) {
+            indexCart = i
+        } 
+    }
+
+    if(indexCart < 0) {
+        cartProduct.push(arrProduct[getInd])
+    } else {
+        cartProduct[indexCart].qtyCart += 1
+    }
+    arrProduct[getInd].stock -= 1
+
+    if(arrProduct[getInd].stock < 0) {
+        var output = ''
+        arrProduct.forEach((val, ind) => {
+            if(ind == getInd) {
+                output +=
+                `<tr>
+                        <td>${val.id}</td>
+                        <td>${val.categ}</td>
+                        <td>${val.name}</td>
+                        <td>${val.price}</td>
+                        <td>${val.stock}</td>
+                        <td>
+                            <input type="button" id="add" value="Add to cart" disabled>
+                        </td>
+                        <td>
+                            <input type="button" id="delete" value="Delete" onclick="deleteProd(${ind})">
+                        </td>
+                        <td>
+                            <input type="button" id="edit" value="Edit" onclick="editProd(${ind})">
+                        </td>
+                    </tr>`
+            } else {
+                output +=
+                `<tr>
+                        <td>${val.id}</td>
+                        <td>${val.categ}</td>
+                        <td>${val.name}</td>
+                        <td>${val.price}</td>
+                        <td>${val.stock}</td>
+                        <td>
+                            <input type="button" id="add" value="Add to cart" onclick="addToCart(${ind})">
+                        </td>
+                        <td>
+                            <input type="button" id="delete" value="Delete" onclick="deleteProd(${ind})">
+                        </td>
+                        <td>
+                            <input type="button" id="edit" value="Edit" onclick="editProd(${ind})">
+                        </td>
+                    </tr>`
+            }
+        })
+        return document.getElementById('render').innerHTML = output
+    } else {
+        displayInput(arrProduct)
+        checkedCart()
+    }
 }
 
 const deleteCart = (getInd) => {
