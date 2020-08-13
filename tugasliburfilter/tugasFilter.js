@@ -284,57 +284,19 @@ const addToCart = (getInd) => {
     }
     arrProduct[getInd].stock -= 1
 
-    if(arrProduct[getInd].stock < 0) {
-        var output = ''
-        arrProduct.forEach((val, ind) => {
-            if(ind == getInd) {
-                output +=
-                `<tr>
-                        <td>${val.id}</td>
-                        <td>${val.categ}</td>
-                        <td>${val.name}</td>
-                        <td>${val.price}</td>
-                        <td>${val.stock}</td>
-                        <td>
-                            <input type="button" id="add" value="Add to cart" disabled>
-                        </td>
-                        <td>
-                            <input type="button" id="delete" value="Delete" onclick="deleteProd(${ind})">
-                        </td>
-                        <td>
-                            <input type="button" id="edit" value="Edit" onclick="editProd(${ind})">
-                        </td>
-                    </tr>`
-            } else {
-                output +=
-                `<tr>
-                        <td>${val.id}</td>
-                        <td>${val.categ}</td>
-                        <td>${val.name}</td>
-                        <td>${val.price}</td>
-                        <td>${val.stock}</td>
-                        <td>
-                            <input type="button" id="add" value="Add to cart" onclick="addToCart(${ind})">
-                        </td>
-                        <td>
-                            <input type="button" id="delete" value="Delete" onclick="deleteProd(${ind})">
-                        </td>
-                        <td>
-                            <input type="button" id="edit" value="Edit" onclick="editProd(${ind})">
-                        </td>
-                    </tr>`
-            }
-        })
-        return document.getElementById('render').innerHTML = output
-    } else {
-        displayInput(arrProduct)
-        checkedCart()
-    }
+    displayInput(arrProduct)
+    checkedCart()
 }
 
 const deleteCart = (getInd) => {
+    arrProduct.forEach((val, ind) => {
+        if(val.name == cartProduct[getInd].name) {
+            arrProduct[ind].stock += cartProduct[getInd].qtyCart
+        }
+    })
     cartProduct.splice(getInd, 1)
     checkedCart()
+    displayInput(arrProduct)
 }
 
 const checkOut = (e) => {
