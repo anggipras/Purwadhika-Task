@@ -300,7 +300,6 @@ const deleteCart = (getInd) => {
 }
 
 const checkOut = (e) => {
-    console.log(cartProduct)
     e.preventDefault()
     var sure = confirm('Are you sure?')
     if(sure) {
@@ -310,7 +309,6 @@ const checkOut = (e) => {
             ${totalCart()}
         </fieldset>`
         document.getElementById('counted').innerHTML = checkOutDisplay
-        console.log(checkOutDisplay)
     } else {
         alert('Make sure all product already checked!')
     }
@@ -318,8 +316,8 @@ const checkOut = (e) => {
 
 const totalCart = () => {
     var total = 0
-    cartProduct.forEach(val => {
-        total += val.price
+    cartProduct.forEach((val, ind)=> {
+        total += val.price * cartProduct[ind].qtyCart
     })
 
     var ppn = (1/100) * total
