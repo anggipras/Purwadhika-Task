@@ -240,6 +240,9 @@ const checkedCart = () => {
                 <td>
                     <input type="button" id="delete" value="Delete" onclick="deleteCart(${ind})">
                 </td>
+                <td>
+                    <input type="button" id="edit" value="Edit" onclick="editCart(${ind})">
+                </td>
             </tr>`
         })
         var lastOutput = 
@@ -253,7 +256,7 @@ const checkedCart = () => {
                         <th>Name</th>
                         <th>Price</th>
                         <th>Qty</th>
-                        <th>Delete</th>
+                        <th colspan="2">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -286,6 +289,82 @@ const addToCart = (getInd) => {
 
     displayInput(arrProduct)
     checkedCart()
+}
+
+const editCart = (getInd) => {
+    var cartOutput = ''
+    cartProduct.forEach((val, ind) => {
+        if(ind == getInd) {
+            cartOutput += 
+            `<tr>
+                <td>${val.id}</td>
+                <td>${val.categ}</td>
+                <td>${val.name}</td>
+                <td>${val.price}</td>
+                <td>
+                    <input type="number" id="qty${ind}" value="${val.qtyCart}">
+                </td>
+                <td>
+                    <input type="button" id="save" value="Confirm" onclick="confirmCart(${ind})">
+                </td>
+                <td>
+                    <input type="button" id="cancel" value="Cancel" onclick="cancelCart(${ind})">
+                </td>
+            </tr>`
+        } else {
+            cartOutput += 
+            `<tr>
+                <td>${val.id}</td>
+                <td>${val.categ}</td>
+                <td>${val.name}</td>
+                <td>${val.price}</td>
+                <td>${val.qtyCart}</td>
+                <td>
+                    <input type="button" id="delete" value="Delete" onclick="deleteCart(${ind})">
+                </td>
+                <td>
+                    <input type="button" id="edit" value="Edit" onclick="editCart(${ind})">
+                </td>
+            </tr>`
+        }
+        
+    })
+    var lastOutput = 
+    `<fieldset>
+        <legend>Cart</legend>
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Category</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th colspan="2">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${cartOutput}
+            </tbody>
+        </table><br><br>
+        <p id="checkout"></p>
+    </fieldset>`
+    document.getElementById('added').innerHTML = lastOutput
+}
+
+const confirmCart = (getInd) => {
+    var arrSaved = []
+    var qty = document.getElementById(`qty${getInd}`).value
+    var id = cartProduct[getInd].id
+    var categ = cartProduct[getInd].categ
+    var name = cartProduct[getInd].name
+    var price = cartProduct[getInd].price
+
+    arrSaved.push({id, categ, name, price, qtyCart: qty})
+    cartProduct.splice(getInd, 1, ...arrSaved)
+
+    checkedCart()
+    displayInput(arrProduct)
 }
 
 const deleteCart = (getInd) => {
